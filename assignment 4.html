@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #app {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+        }
+        button {
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>TODO App</h1>
+        <input type="text" id="todoInput" placeholder="Add a new TODO">
+        <button onclick="addTodo()">Add</button>
+        <ul id="todoList"></ul>
+        <button onclick="removeAllTodos()">Remove All</button>
+    </div>
+
+    <script>
+        // Get references to the HTML elements
+        const todoInput = document.getElementById("todoInput");
+        const todoList = document.getElementById("todoList");
+
+        // Initialize an array to store TODO items
+        let todos = [];
+
+        // Function to add a new TODO
+        function addTodo() {
+            const todoText = todoInput.value.trim();
+            if (todoText !== "") {
+                todos.push(todoText);
+                updateTodoList();
+                todoInput.value = "";
+            }
+        }
+
+        // Function to remove a TODO by index
+        function removeTodo(index) {
+            todos.splice(index, 1);
+            updateTodoList();
+        }
+
+        // Function to edit a TODO by index
+        function editTodo(index) {
+            const updatedText = prompt("Edit the TODO:", todos[index]);
+            if (updatedText !== null) {
+                todos[index] = updatedText;
+                updateTodoList();
+            }
+        }
+
+        // Function to remove all TODOs
+        function removeAllTodos() {
+            todos = [];
+            updateTodoList();
+        }
+
+        // Function to update the TODO list displayed on the page
+        function updateTodoList() {
+            todoList.innerHTML = "";
+            todos.forEach((todo, index) => {
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `
+                    ${todo}
+                    <button onclick="editTodo(${index})">Edit</button>
+                    <button onclick="removeTodo(${index})">Delete</button>
+                `;
+                todoList.appendChild(listItem);
+            });
+        }
+
+        // Initial rendering of the TODO list
+        updateTodoList();
+    </script>
+</body>
+</html>
